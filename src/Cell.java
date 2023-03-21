@@ -19,7 +19,10 @@ public class Cell {
     }
 
 
-
+    /** if cell is alive or dead -> fill it with a different color
+     * return the rect with the condtions
+     *
+      */
     public void display(){
         if(cellState == CellState.ALIVE){
             Main.app.fill(0);
@@ -29,6 +32,10 @@ public class Cell {
         Main.app.rect(x,y,size,size);
         }
 
+    /** swtiching the dead and alive cells
+     * for ex. cell is dead -> cell is alive
+     *
+      */
     public void handleClick(){
         if(cellState == CellState.DEAD){
             cellState = CellState.ALIVE;
@@ -37,12 +44,22 @@ public class Cell {
         }
     }
 
+    /** ew cell state is a function of the current state and quantity of live neighbors in the surrounding Moore neighborhood
+     *
+      * @param cells
+     */
+
     public void applyRules(Cell[][] cells){
         int liveNeighbors = countLiveNeighbors(cells);
         cellState = rules.applyRules(cellState, liveNeighbors);
     }
 
-    public int countLiveNeighbors(Cell[][] cells){  
+    /**
+     *inspects the eight surrounding neighbors, and returns how many are alive
+      * @param cells
+     * @return
+     */
+    public int countLiveNeighbors(Cell[][] cells){
         int count = 0; 
         for(int row = this.row - 1; row <= this.row + 1; row++){
             for(int column = this.column -1 ; column <= this.column + 1; column++){
@@ -58,6 +75,9 @@ public class Cell {
     }
 
 
+    /** completes the transition to the cell’s next state
+     *
+      */
     public void evolve(){
         if (cellState == CellState.WILL_REVIVE){
             cellState = CellState.ALIVE;
